@@ -4,14 +4,14 @@ import { DocsThemeConfig } from "nextra-theme-docs";
 const config: DocsThemeConfig = {
   logo: <span>Plico</span>,
   project: {
-    link: "https://github.com/shuding/nextra-docs-template",
+    link: "https://github.com/Hidde-Heijnen/plico",
   },
   chat: {
-    link: "https://discord.com",
+    link: "https://discord.gg/XgtNt2f3Rh",
   },
   docsRepositoryBase: "https://github.com/Hidde-Heijnen/plico",
   footer: {
-    text: "Nextra Docs Template",
+    text: "Plico © 2023",
   },
 };
 
