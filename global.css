@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+main img {
+  @apply rounded-lg mt-2;
+}
+
+.no-round-image img {
+  @apply rounded-none;
+}
