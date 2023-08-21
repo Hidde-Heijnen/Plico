@@ -71,7 +71,7 @@ const NavHeader: React.FC = () => {
         )}
       >
         {/* <img src={reactLogo} className="w-10 shrink-0" alt="Laplace Logo" /> */}
-        <Icons.Logo className="h-8 w-8 shrink-0 fill-highlight" />
+        <Icons.Logo className="fill-highlight h-8 w-8 shrink-0" />
         Easy Intake
       </span>
       <Tooltip>
@@ -108,13 +108,13 @@ const NavLink: React.FC<NavLinkProps> = ({
         <TooltipTrigger asChild>
           <Link
             to={href}
-            className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 "
+            className="text-foreground hover:bg-accent/30 flex h-12 items-center rounded-md p-3 "
           >
             {match && (
               <motion.span
                 layoutId="bubble"
                 className={cn(
-                  "absolute inset-0 z-0 bg-accent",
+                  "bg-accent absolute inset-0 z-0",
                   collapsed ? "w-12" : "w-56"
                 )}
                 style={{ borderRadius: 6 }}
@@ -127,7 +127,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                   <motion.div
                     layoutId={`${text} notification`}
                     className={cn(
-                      "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-highlight"
+                      "bg-highlight absolute right-0 top-0 z-20 h-2 w-2 rounded-full"
                     )}
                     style={{ borderRadius: 9999 }}
                     transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
@@ -195,11 +195,12 @@ const ProfileCard = React.forwardRef<
         )}
       >
         <p className="truncate font-bold">Johnathan Doeghy</p>
-        <p className="truncate text-sm text-foreground/80">email@gmail.com</p>
+        <p className="text-foreground/80 truncate text-sm">email@gmail.com</p>
       </div>
     </Card>
   )
 })
+ProfileCard.displayName = "ProfileCard"
 
 interface SeperatorProps extends React.HTMLAttributes<HTMLElement> {
   title?: string
@@ -214,7 +215,7 @@ const NavSeperator: React.FC<SeperatorProps> = ({
   return (
     <li
       className={cn(
-        "relative z-20 my-1.5 h-px w-full bg-border",
+        "bg-border relative z-20 my-1.5 h-px w-full",
         title && "mt-4",
         className
       )}
@@ -223,7 +224,7 @@ const NavSeperator: React.FC<SeperatorProps> = ({
       {title && (
         <p
           className={cn(
-            "absolute inset-0 flex w-fit items-center bg-card pl-1 pr-3 text-lg capitalize text-card-foreground transition-[width,opacity] duration-500 ease-in-out",
+            "bg-card text-card-foreground absolute inset-0 flex w-fit items-center pl-1 pr-3 text-lg capitalize transition-[width,opacity] duration-500 ease-in-out",
             collapsed && "w-0 opacity-0"
           )}
         >
