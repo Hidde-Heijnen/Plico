@@ -1,7 +1,5 @@
-import React from "react"
+import React, { useContext, useState } from "react"
 import { motion } from "framer-motion"
-import { useAtom } from "jotai"
-import { atomWithStorage } from "jotai/utils"
 import { Link, useMatch } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
@@ -23,44 +21,54 @@ interface NavLinkProps {
   notifications?: number
 }
 
-const collapsedAtom = atomWithStorage("collapsed", true)
+const NavContext = React.createContext<{
+  collapsed: boolean
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+} | null>(null)
+
+const useCollapsed = () => {
+  const { collapsed, setCollapsed } = useContext(NavContext)
+  return [collapsed, setCollapsed] as const
+}
 
 const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   ({ className, ...props }, ref) => {
-    const [collapsed] = useAtom(collapsedAtom)
+    const [collapsed, setCollapsed] = useState(false)
 
     return (
-      <aside
-        className={cn(
-          "border-border bg-card flex h-screen shrink-0 flex-col justify-between border-r p-3 transition-[width] duration-500 ease-in-out",
-          collapsed ? "w-[4.5rem]" : "w-[15.5rem]",
-          className
-        )}
-        ref={ref}
-        {...props}
-      >
-        <nav className="flex flex-col">
-          <NavHeader />
-          <ul className="relative flex flex-col gap-y-2">
-            <NavLink
-              href="/"
-              icon={Icons.Mic}
-              text="Summarize"
-              notifications={1}
-            />
-            <NavSeperator />
-            <NavLink href="/settings" icon={Icons.Settings} text="Settings" />
-          </ul>
-        </nav>
-        <ProfileCard />
-      </aside>
+      <NavContext.Provider value={{ collapsed, setCollapsed }}>
+        <aside
+          className={cn(
+            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 transition-[width] duration-500 ease-in-out",
+            collapsed ? "w-[4.5rem]" : "w-[15.5rem]",
+            className
+          )}
+          ref={ref}
+          {...props}
+        >
+          <nav className="flex flex-col">
+            <NavHeader />
+            <ul className="relative flex flex-col gap-y-2">
+              <NavLink
+                href="/"
+                icon={Icons.Mic}
+                text="Summarize"
+                notifications={1}
+              />
+              <NavSeperator />
+              <NavLink href="/settings" icon={Icons.Settings} text="Settings" />
+            </ul>
+          </nav>
+          <ProfileCard />
+        </aside>
+      </NavContext.Provider>
     )
   }
 )
 Nav.displayName = "Nav"
 
 const NavHeader: React.FC = () => {
-  const [collapsed, setCollapsed] = useAtom(collapsedAtom)
+  const [collapsed, setCollapsed] = useCollapsed()
 
   return (
     <div className="relative mb-8 ml-1 flex w-full items-center">
@@ -98,7 +106,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   text,
   notifications,
 }) => {
-  const [collapsed] = useAtom(collapsedAtom)
+  const [collapsed] = useCollapsed()
 
   const match = useMatch(href + "/*")
 
@@ -108,13 +116,13 @@ const NavLink: React.FC<NavLinkProps> = ({
         <TooltipTrigger asChild>
           <Link
             to={href}
-            className="text-foreground hover:bg-accent/30 flex h-12 items-center rounded-md p-3 "
+            className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 "
           >
             {match && (
               <motion.span
                 layoutId="bubble"
                 className={cn(
-                  "bg-accent absolute inset-0 z-0",
+                  "absolute inset-0 z-0 bg-accent",
                   collapsed ? "w-12" : "w-56"
                 )}
                 style={{ borderRadius: 6 }}
@@ -147,7 +155,7 @@ const NavLink: React.FC<NavLinkProps> = ({
               </span>
             </div>
             {notifications && !collapsed && (
-              <Badge asChild variant="highlight">
+              <Badge asChild>
                 <motion.div
                   layoutId={`${text} notification`}
                   className="absolute right-0 z-10 mr-2"
@@ -172,7 +180,8 @@ const ProfileCard = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const [collapsed] = useAtom(collapsedAtom)
+  const [collapsed] = useCollapsed()
+
   return (
     <Card
       className={cn(
@@ -195,7 +204,7 @@ const ProfileCard = React.forwardRef<
         )}
       >
         <p className="truncate font-bold">Johnathan Doeghy</p>
-        <p className="text-foreground/80 truncate text-sm">email@gmail.com</p>
+        <p className="truncate text-sm text-foreground/80">email@gmail.com</p>
       </div>
     </Card>
   )
@@ -211,11 +220,12 @@ const NavSeperator: React.FC<SeperatorProps> = ({
   className,
   ...props
 }) => {
-  const [collapsed] = useAtom(collapsedAtom)
+  const [collapsed] = useCollapsed()
+
   return (
     <li
       className={cn(
-        "bg-border relative z-20 my-1.5 h-px w-full",
+        "relative z-20 my-1.5 h-px w-full bg-border",
         title && "mt-4",
         className
       )}
@@ -224,7 +234,7 @@ const NavSeperator: React.FC<SeperatorProps> = ({
       {title && (
         <p
           className={cn(
-            "bg-card text-card-foreground absolute inset-0 flex w-fit items-center pl-1 pr-3 text-lg capitalize transition-[width,opacity] duration-500 ease-in-out",
+            "absolute inset-0 flex w-fit items-center bg-card pl-1 pr-3 text-lg capitalize text-card-foreground transition-[width,opacity] duration-500 ease-in-out",
             collapsed && "w-0 opacity-0"
           )}
         >
