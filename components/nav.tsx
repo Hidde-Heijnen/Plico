@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
-import { Link, useMatch } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -108,17 +109,17 @@ const NavLink: React.FC<NavLinkProps> = ({
 }) => {
   const [collapsed] = useCollapsed()
 
-  const match = useMatch(href + "/*")
+  const pathname = usePathname()
 
   return (
     <li className="relative">
       <Tooltip open={!collapsed ? false : undefined} delayDuration={500}>
         <TooltipTrigger asChild>
           <Link
-            to={href}
+            href={href}
             className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 "
           >
-            {match && (
+            {pathname === href && (
               <motion.span
                 layoutId="bubble"
                 className={cn(
