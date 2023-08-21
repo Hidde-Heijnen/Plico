@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
@@ -27,6 +27,10 @@ const NavContext = React.createContext<{
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 } | null>(null)
 
+/**
+ * Hook to get the collapsed state and setCollapsed function for the nav sidebar
+ * @returns [collapsed, setCollapsed]
+ */
 const useCollapsed = () => {
   const { collapsed, setCollapsed } = useContext(NavContext)
   return [collapsed, setCollapsed] as const
@@ -35,6 +39,12 @@ const useCollapsed = () => {
 const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   ({ className, ...props }, ref) => {
     const [collapsed, setCollapsed] = useState(false)
+
+    // Load collapsed state from local storage
+    useEffect(() => {
+      const stored = localStorage.getItem("nav-collapsed")
+      if (stored === "true") setCollapsed(true)
+    }, [])
 
     return (
       <NavContext.Provider value={{ collapsed, setCollapsed }}>
@@ -71,6 +81,11 @@ Nav.displayName = "Nav"
 const NavHeader: React.FC = () => {
   const [collapsed, setCollapsed] = useCollapsed()
 
+  const toggleCollapsed = () => {
+    localStorage.setItem("nav-collapsed", (!collapsed).toString())
+    setCollapsed(!collapsed)
+  }
+
   return (
     <div className="relative mb-8 ml-1 flex w-full items-center">
       <span
@@ -85,11 +100,7 @@ const NavHeader: React.FC = () => {
       </span>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"ghost"}
-            onClick={() => setCollapsed(!collapsed)}
-            className="px-2"
-          >
+          <Button variant={"ghost"} onClick={toggleCollapsed} className="px-2">
             <Icons.NavCollapseIcon className="shrink-0" collapsed={collapsed} />
           </Button>
         </TooltipTrigger>
