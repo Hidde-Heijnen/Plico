@@ -1,17 +1,49 @@
 import "@/global.css"
 
-import { Nav } from "@/components/nav"
+import { Icons } from "@/components/icons"
+import {
+  Nav,
+  NavCategory,
+  NavContent,
+  NavFooter,
+  NavHeader,
+  NavLink,
+  NavSeperator,
+} from "@/components/nav"
 
 import { TooltipProvider } from "@/components/ui/tooltip"
 
 export default function App({ Component, pageProps }) {
   return (
     <TooltipProvider>
-<div className="fixed flex h-screen w-screen">
-      <Nav />
-      <main className="w-full overflow-y-scroll p-3">        <Component {...pageProps} /></main>
-    </div>
+      <div className="fixed flex h-screen w-screen">
+        <Nav>
+          <NavHeader />
+          <NavContent>
+            <NavCategory title="Cats" icon={Icons.Edit}>
+              <NavLink
+                href="/"
+                icon={Icons.Mic}
+                label="Summarize"
+                notifications={1}
+              />
+              <NavLink
+                href="/test"
+                icon={Icons.Trash}
+                label="Test"
+                notifications={99}
+              />
+            </NavCategory>
+            <NavSeperator />
+          </NavContent>
+          <NavFooter>
+            <NavLink href="/settings" icon={Icons.Settings} label="Settings" />
+          </NavFooter>
+        </Nav>
+        <main className="w-full overflow-y-scroll p-3">
+          <Component {...pageProps} />
+        </main>
+      </div>
     </TooltipProvider>
-
-)
+  )
 }

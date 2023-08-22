@@ -15,13 +15,6 @@ import {
 } from "@/components/ui/tooltip"
 import { Icon, Icons } from "@/components/icons"
 
-interface NavLinkProps {
-  href: string
-  icon: Icon
-  text: string
-  notifications?: number
-}
-
 const NavContext = React.createContext<{
   collapsed: boolean
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
@@ -37,7 +30,7 @@ const useCollapsed = () => {
 }
 
 const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
-  ({ className, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     const [collapsed, setCollapsed] = useState(false)
 
     // Load collapsed state from local storage
@@ -57,19 +50,7 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
           ref={ref}
           {...props}
         >
-          <nav className="flex flex-col">
-            <NavHeader />
-            <ul className="relative flex flex-col gap-y-2">
-              <NavLink
-                href="/"
-                icon={Icons.Mic}
-                text="Summarize"
-                notifications={1}
-              />
-              <NavSeperator />
-              <NavLink href="/settings" icon={Icons.Settings} text="Settings" />
-            </ul>
-          </nav>
+          <nav className="flex h-full flex-col">{children}</nav>
           <ProfileCard />
         </aside>
       </NavContext.Provider>
@@ -112,10 +93,56 @@ const NavHeader: React.FC = () => {
   )
 }
 
+const NavContent: React.FC<React.HTMLAttributes<HTMLUListElement>> = ({
+  children,
+}) => {
+  return <ul className="relative w-full space-y-2">{children}</ul>
+}
+
+const NavFooter: React.FC<React.HTMLAttributes<HTMLUListElement>> = ({
+  children,
+}) => {
+  return <ul className="relative mt-auto w-full space-y-2">{children}</ul>
+}
+
+interface NavCategoryProps extends React.HTMLAttributes<HTMLUListElement> {
+  title: string
+  icon: Icon
+}
+
+const NavCategory: React.FC<NavCategoryProps> = ({
+  title,
+  icon: Icon,
+  children,
+}) => {
+  return (
+    <li className="relative">
+      <div className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 ">
+        <div className="flex items-center">
+          <div className="relative">
+            <Icon className="relative z-10 h-6 w-6 shrink-0" />
+          </div>
+          <span className="relative z-10 w-32 max-w-full truncate text-lg">
+            {title}
+          </span>
+        </div>
+      </div>
+      <ul className="relative w-full space-y-2">{children}</ul>
+    </li>
+  )
+}
+
+interface NavLinkProps {
+  href: string
+  icon: Icon
+  label: string
+  notifications?: number
+}
+
 const NavLink: React.FC<NavLinkProps> = ({
   href,
   icon: Icon,
-  text,
+  label,
   notifications,
 }) => {
   const [collapsed] = useCollapsed()
@@ -145,7 +172,7 @@ const NavLink: React.FC<NavLinkProps> = ({
               <div className="relative">
                 {notifications && collapsed && (
                   <motion.div
-                    layoutId={`${text} notification`}
+                    layoutId={`${label} notification`}
                     className={cn(
                       "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
                     )}
@@ -163,13 +190,13 @@ const NavLink: React.FC<NavLinkProps> = ({
                     : "ml-4 max-w-full opacity-100"
                 )}
               >
-                {text}
+                {label}
               </span>
             </div>
             {notifications && !collapsed && (
               <Badge asChild>
                 <motion.div
-                  layoutId={`${text} notification`}
+                  layoutId={`${label} notification`}
                   className="absolute right-0 z-10 mr-2"
                   transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                   style={{ borderRadius: 9999 }}
@@ -182,7 +209,7 @@ const NavLink: React.FC<NavLinkProps> = ({
             )}
           </Link>
         </TooltipTrigger>
-        <TooltipContent side="right">{text}</TooltipContent>
+        <TooltipContent side="right">{label}</TooltipContent>
       </Tooltip>
     </li>
   )
@@ -257,4 +284,12 @@ const NavSeperator: React.FC<SeperatorProps> = ({
   )
 }
 
-export { Nav }
+export {
+  Nav,
+  NavHeader,
+  NavContent,
+  NavFooter,
+  NavCategory,
+  NavLink,
+  NavSeperator,
+}
