@@ -166,7 +166,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                 {text}
               </span>
             </div>
-            {notifications && !collapsed && (
+            {/* {notifications && !collapsed && (
               <Badge asChild>
                 <motion.div
                   layoutId={`${text} notification`}
@@ -179,7 +179,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                     : "99+"}
                 </motion.div>
               </Badge>
-            )}
+            )} */}
           </Link>
         </TooltipTrigger>
         <TooltipContent side="right">{text}</TooltipContent>
