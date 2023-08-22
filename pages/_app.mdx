@@ -1,11 +1,17 @@
 import "@/global.css"
 
+import { Nav } from "@/components/nav"
+
 import { TooltipProvider } from "@/components/ui/tooltip"
 
 export default function App({ Component, pageProps }) {
   return (
     <TooltipProvider>
-      <Component {...pageProps} />
+<div className="fixed flex h-screen w-screen">
+      <Nav />
+      <main className="w-full overflow-y-scroll p-3">        <Component {...pageProps} /></main>
+    </div>
     </TooltipProvider>
-  )
+
+)
 }
