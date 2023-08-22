@@ -95,7 +95,7 @@ const NavHeader: React.FC = () => {
         )}
       >
         {/* <img src={reactLogo} className="w-10 shrink-0" alt="Laplace Logo" /> */}
-        <Icons.Logo className="fill-highlight h-8 w-8 shrink-0" />
+        <Icons.Logo className="h-8 w-8 shrink-0 fill-primary" />
         Easy Intake
       </span>
       <Tooltip>
@@ -147,7 +147,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                   <motion.div
                     layoutId={`${text} notification`}
                     className={cn(
-                      "bg-highlight absolute right-0 top-0 z-20 h-2 w-2 rounded-full"
+                      "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
                     )}
                     style={{ borderRadius: 9999 }}
                     transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
@@ -166,7 +166,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                 {text}
               </span>
             </div>
-            {/* {notifications && !collapsed && (
+            {notifications && !collapsed && (
               <Badge asChild>
                 <motion.div
                   layoutId={`${text} notification`}
@@ -179,7 +179,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                     : "99+"}
                 </motion.div>
               </Badge>
-            )} */}
+            )}
           </Link>
         </TooltipTrigger>
         <TooltipContent side="right">{text}</TooltipContent>
