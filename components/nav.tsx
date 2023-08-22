@@ -206,7 +206,10 @@ const ProfileCard = React.forwardRef<
       {...props}
     >
       <Avatar className="h-10 w-10">
-        <AvatarImage src="https://neumarksurgery.com/wp-content/uploads/2022/12/Dr-Harish-Mithiran-Thoracic-Surgeon-Singapore.jpg" />
+        <AvatarImage
+          src="https://neumarksurgery.com/wp-content/uploads/2022/12/Dr-Harish-Mithiran-Thoracic-Surgeon-Singapore.jpg"
+          className="object-cover"
+        />
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
       <div
