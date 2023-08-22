@@ -1,6 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@radix-ui/react-accordion"
 import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
@@ -117,17 +123,17 @@ const NavCategory: React.FC<NavCategoryProps> = ({
 }) => {
   return (
     <li className="relative">
-      <div className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 ">
-        <div className="flex items-center">
-          <div className="relative">
-            <Icon className="relative z-10 h-6 w-6 shrink-0" />
-          </div>
-          <span className="relative z-10 w-32 max-w-full truncate text-lg">
-            {title}
-          </span>
-        </div>
-      </div>
-      <ul className="relative w-full space-y-2">{children}</ul>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="content">
+          <AccordionTrigger className="flex w-full flex-row items-center gap-x-2 px-1">
+            <Icon className="h-5 w-5" />
+            <p>{title}</p>
+          </AccordionTrigger>
+          <AccordionContent asChild>
+            <ul className="relative w-full space-y-2">{children}</ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </li>
   )
 }
