@@ -1,5 +1,11 @@
-import '@/global.css'
+import "@/global.css"
 
-export default function App({ Component, pageProps }) { return <Component {...pageProps} />
+import { TooltipProvider } from "@/components/ui/tooltip"
 
+export default function App({ Component, pageProps }) {
+  return (
+    <TooltipProvider>
+      <Component {...pageProps} />
+    </TooltipProvider>
+  )
 }
