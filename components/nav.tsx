@@ -68,7 +68,7 @@ const NavHeader: React.FC = () => {
   }
 
   return (
-    <div className="relative mb-8 ml-1 flex w-full items-center">
+    <div className="relative mb-8 ml-1 flex w-full items-center text-card-foreground">
       <span
         className={cn(
           "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg font-bold transition-[max-width,opacity] duration-500 ease-in-out",
@@ -233,7 +233,10 @@ const ProfileCard = React.forwardRef<
       {...props}
     >
       <Avatar className="h-10 w-10">
-        <AvatarImage src="https://neumarksurgery.com/wp-content/uploads/2022/12/Dr-Harish-Mithiran-Thoracic-Surgeon-Singapore.jpg" />
+        <AvatarImage
+          src="https://neumarksurgery.com/wp-content/uploads/2022/12/Dr-Harish-Mithiran-Thoracic-Surgeon-Singapore.jpg"
+          className="object-cover"
+        />
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
       <div
