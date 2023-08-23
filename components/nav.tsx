@@ -151,6 +151,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
       value={title}
       {...props}
       onMouseLeave={() => {
+        // Close the accordion if the mouse leaves the category, be it the trigger button or its content (when sidebar collapsed)
         if (collapsed && accordionValue.includes(title))
           setAccordionValue(accordionValue.filter((v) => v !== title))
       }}
@@ -158,6 +159,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
       <AccordionHeader>
         <AccordionTrigger
           onMouseEnter={() => {
+            // Open the accordion if the mouse enters the category trigger (when sidebar collapsed)
             if (collapsed && !accordionValue.includes(title))
               setAccordionValue([title, ...accordionValue])
           }}
@@ -185,6 +187,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
       <AccordionContent
         className={cn(
           "relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+          // When sidebar collapsed, the content is absolute positioned to the right of the sidebar
           collapsed
             ? "absolute left-full top-0 ml-4 w-fit bg-card"
             : "w-full pl-4"
