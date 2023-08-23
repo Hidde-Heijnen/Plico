@@ -32,16 +32,28 @@ export default function App({ Component, pageProps }) {
                 label="B"
                 notifications={99}
               />
+              <NavCategory title="Cats2" icon={Icons.Mic}>
+                <NavLink
+                  href="/c"
+                  icon={Icons.Mic}
+                  label="C"
+                  notifications={1}
+                />
+                <NavLink
+                  href="/d"
+                  icon={Icons.Trash}
+                  label="D"
+                  notifications={99}
+                />
+              </NavCategory>
             </NavCategory>
-            <NavCategory title="Cats2" icon={Icons.Edit}>
-              <NavLink href="/c" icon={Icons.Mic} label="C" notifications={1} />
-              <NavLink
-                href="/d"
-                icon={Icons.Trash}
-                label="D"
-                notifications={99}
-              />
-            </NavCategory>
+            <NavLink href="/e" icon={Icons.Mic} label="E" notifications={1} />
+            <NavLink
+              href="/f"
+              icon={Icons.Trash}
+              label="F"
+              notifications={99}
+            />
           </NavContent>
           <NavFooter>
             <NavLink href="/settings" icon={Icons.Settings} label="Settings" />
