@@ -163,6 +163,8 @@ const NavCategory: React.FC<NavCategoryProps> = ({
             if (collapsed && !accordionValue.includes(title))
               setAccordionValue([title, ...accordionValue])
           }}
+          // Prevent the accordion from opening when the category is clicked (when sidebar collapsed)
+          onClick={(e) => collapsed && e.preventDefault()}
           className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180"
         >
           <div className="flex items-center gap-x-2">
@@ -186,7 +188,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
       </AccordionHeader>
       <AccordionContent
         className={cn(
-          "relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+          "category group relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
           // When sidebar collapsed, the content is absolute positioned to the right of the sidebar
           collapsed
             ? "absolute left-full top-0 ml-4 w-fit bg-card"
@@ -252,10 +254,9 @@ const NavLink: React.FC<NavLinkProps> = ({
               </div>
               <span
                 className={cn(
-                  "relative z-10 w-32 max-w-full truncate text-lg transition-[margin,max-width,opacity] duration-500 ease-in-out",
-                  collapsed
-                    ? "ml-0 max-w-0 opacity-0"
-                    : "ml-4 max-w-full opacity-100"
+                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-500 ease-in-out",
+                  collapsed &&
+                    "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
                 )}
               >
                 {label}
