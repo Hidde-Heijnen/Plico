@@ -4,10 +4,12 @@ import { usePathname } from "next/navigation"
 import {
   Accordion,
   AccordionContent,
+  AccordionHeader,
   AccordionItem,
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
 import { motion } from "framer-motion"
+import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -119,16 +121,36 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   icon: Icon,
   children,
 }) => {
+  const [collapsed] = useCollapsed()
+  const [value, setValue] = useState("")
+
+  useEffect(() => {
+    if (collapsed) setValue("")
+  }, [collapsed])
+
   return (
     <li className="relative">
-      <Accordion type="single" collapsible>
+      <Accordion
+        type="single"
+        collapsible
+        value={value}
+        onValueChange={setValue}
+      >
         <AccordionItem value="content">
-          <AccordionTrigger className="flex w-full flex-row items-center gap-x-2 px-1">
-            <Icon className="h-5 w-5" />
-            <p>{title}</p>
-          </AccordionTrigger>
-          <AccordionContent asChild>
-            <ul className="relative w-full space-y-2">{children}</ul>
+          <AccordionHeader className="flex">
+            <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180">
+              <div className="flex items-center gap-x-2">
+                <Icon className="h-4 w-4 shrink-0" />
+                <p className="text-sm uppercase">{title}</p>
+              </div>
+              <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+            </AccordionTrigger>
+          </AccordionHeader>
+          <AccordionContent
+            asChild
+            className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+          >
+            <ul className="relative w-full space-y-2 pb-4">{children}</ul>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
