@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import {
   Accordion,
   AccordionContent,
+  AccordionHeader,
   AccordionItem,
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
@@ -74,6 +75,7 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
             value={accordionValue}
             onValueChange={setAccordionValue}
             className="h-full"
+            orientation={collapsed ? "horizontal" : "vertical"}
             asChild
           >
             <nav className="flex h-full flex-col">{children}</nav>
@@ -144,27 +146,36 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   const [collapsed] = useCollapsed()
 
   return (
-    <AccordionItem value={title} {...props} disabled={collapsed}>
-      <AccordionTrigger className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180">
-        <div className="flex items-center gap-x-2">
-          <Icon className="relative z-10 h-6 w-6 shrink-0" />
-          <p
+    <AccordionItem value={title} {...props}>
+      <AccordionHeader>
+        <AccordionTrigger className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180">
+          <div className="flex items-center gap-x-2">
+            <Icon className="relative z-10 h-6 w-6 shrink-0" />
+            <p
+              className={cn(
+                "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
+                collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+              )}
+            >
+              {title}
+            </p>
+          </div>
+          <ChevronDown
             className={cn(
-              "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
-              collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+              "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
+              collapsed ? "opacity-0" : "opacity-100"
             )}
-          >
-            {title}
-          </p>
-        </div>
-        <ChevronDown
-          className={cn(
-            "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
-            collapsed ? "opacity-0" : "opacity-100"
-          )}
-        />
-      </AccordionTrigger>
-      <AccordionContent className="relative w-full space-y-2 overflow-hidden pl-4 text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+          />
+        </AccordionTrigger>
+      </AccordionHeader>
+      <AccordionContent
+        className={cn(
+          "relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+          collapsed
+            ? "absolute left-full top-0 ml-4 w-fit bg-card"
+            : "w-full pl-4"
+        )}
+      >
         {children}
       </AccordionContent>
     </AccordionItem>
