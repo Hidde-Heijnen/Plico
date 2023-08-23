@@ -26,16 +26,15 @@ import { Icon, Icons } from "@/components/icons"
 const NavContext = React.createContext<{
   collapsed: boolean
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+  accordionValue: string[]
+  setAccordionValue: React.Dispatch<React.SetStateAction<string[]>>
 } | null>(null)
 
 /**
  * Hook to get the collapsed state and setCollapsed function for the nav sidebar
  * @returns [collapsed, setCollapsed]
  */
-const useCollapsed = () => {
-  const { collapsed, setCollapsed } = useContext(NavContext)
-  return [collapsed, setCollapsed] as const
-}
+const useNavContext = () => useContext(NavContext)
 
 const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   ({ className, children, ...props }, ref) => {
@@ -60,7 +59,9 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
     }, [collapsed])
 
     return (
-      <NavContext.Provider value={{ collapsed, setCollapsed }}>
+      <NavContext.Provider
+        value={{ collapsed, setCollapsed, accordionValue, setAccordionValue }}
+      >
         <aside
           className={cn(
             "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 transition-[width] duration-500 ease-in-out",
@@ -90,7 +91,7 @@ Nav.displayName = "Nav"
 const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => {
-  const [collapsed, setCollapsed] = useCollapsed()
+  const { collapsed, setCollapsed } = useNavContext()
 
   const toggleCollapsed = () => {
     localStorage.setItem("nav-collapsed", (!collapsed).toString())
@@ -143,12 +144,25 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   children,
   ...props
 }) => {
-  const [collapsed] = useCollapsed()
+  const { collapsed, accordionValue, setAccordionValue } = useNavContext()
 
   return (
-    <AccordionItem value={title} {...props}>
+    <AccordionItem
+      value={title}
+      {...props}
+      onMouseLeave={() => {
+        if (collapsed && accordionValue.includes(title))
+          setAccordionValue(accordionValue.filter((v) => v !== title))
+      }}
+    >
       <AccordionHeader>
-        <AccordionTrigger className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180">
+        <AccordionTrigger
+          onMouseEnter={() => {
+            if (collapsed && !accordionValue.includes(title))
+              setAccordionValue([title, ...accordionValue])
+          }}
+          className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180"
+        >
           <div className="flex items-center gap-x-2">
             <Icon className="relative z-10 h-6 w-6 shrink-0" />
             <p
@@ -195,7 +209,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   label,
   notifications,
 }) => {
-  const [collapsed] = useCollapsed()
+  const { collapsed } = useNavContext()
 
   const pathname = usePathname()
   const active = pathname.startsWith(href)
@@ -270,7 +284,7 @@ const NavProfile = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const [collapsed] = useCollapsed()
+  const { collapsed } = useNavContext()
 
   return (
     <Card
@@ -313,7 +327,7 @@ const NavSeperator: React.FC<SeperatorProps> = ({
   className,
   ...props
 }) => {
-  const [collapsed] = useCollapsed()
+  const { collapsed } = useNavContext()
 
   return (
     <li
