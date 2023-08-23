@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useContext, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -8,6 +10,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuItemProps,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@radix-ui/react-navigation-menu"
 import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
@@ -71,12 +83,21 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
           {...props}
         >
           <Accordion
-            asChild
             type="multiple"
             value={accordionValue}
             onValueChange={setAccordionValue}
+            className="h-full"
           >
-            <nav className="flex h-full flex-col">{children}</nav>
+            <NavigationMenu
+              aria-disabled={!collapsed}
+              className="h-full"
+              asChild
+            >
+              <NavigationMenuList className="flex h-full flex-col">
+                {children}
+              </NavigationMenuList>
+              {/* <NavigationMenuViewport /> */}
+            </NavigationMenu>
           </Accordion>
         </aside>
       </NavContext.Provider>
@@ -96,10 +117,10 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   }
 
   return (
-    <div className="relative mb-8 flex w-full items-center">
+    <div className="relative mb-8 flex w-full items-center justify-between">
       <div
         className={cn(
-          "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity] duration-500 ease-in-out",
+          "flex items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity] duration-500 ease-in-out",
           collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
         )}
         {...props}
@@ -118,64 +139,101 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   )
 }
 
-const NavContent: React.FC<React.HTMLAttributes<HTMLUListElement>> = ({
+const NavContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
 }) => {
-  return <ul className="relative w-full space-y-2">{children}</ul>
+  return <div className="relative w-full space-y-2">{children}</div>
 }
 
-const NavFooter: React.FC<React.HTMLAttributes<HTMLUListElement>> = ({
+const NavFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
 }) => {
-  return <ul className="relative mt-auto w-full space-y-2">{children}</ul>
+  return <div className="relative mt-auto w-full space-y-2">{children}</div>
 }
 
-interface NavCategoryProps extends React.HTMLAttributes<HTMLUListElement> {
+interface NavCategoryProps extends NavigationMenuItemProps {
   title: string
   icon: Icon
 }
 
 const NavCategory: React.FC<NavCategoryProps> = ({
   title,
-  icon: Icon,
+  icon,
   children,
+  ...props
 }) => {
   const [collapsed] = useCollapsed()
 
   return (
-    <li className="relative">
+    <NavigationMenuItem {...props} className="list-none">
       <AccordionItem value={title}>
         <AccordionHeader className="flex">
-          <AccordionTrigger className="flex flex-1 items-center justify-between px-3 py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180">
-            <div className="flex items-center gap-x-2">
-              <Icon className="h-4 w-4 shrink-0" />
-              <p
-                className={cn(
-                  "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
-                  collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
-                )}
-              >
-                {title}
-              </p>
-            </div>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
-                collapsed ? "opacity-0" : "opacity-100"
-              )}
-            />
-          </AccordionTrigger>
+          {collapsed ? (
+            <NavigationMenuTrigger asChild>
+              <NavCategoryTrigger title={title} icon={icon} />
+            </NavigationMenuTrigger>
+          ) : (
+            <AccordionTrigger asChild>
+              <NavCategoryTrigger title={title} icon={icon} />
+            </AccordionTrigger>
+          )}
         </AccordionHeader>
-        <AccordionContent
-          asChild
-          className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-        >
-          <ul className="relative w-full space-y-2 pb-4">{children}</ul>
-        </AccordionContent>
+        {collapsed ? (
+          <NavigationMenuContent>
+            <div className="relative w-full space-y-2 pb-4">{children}</div>
+          </NavigationMenuContent>
+        ) : (
+          <AccordionContent className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+            <div className="relative w-full space-y-2 pb-4">{children}</div>
+          </AccordionContent>
+        )}
       </AccordionItem>
-    </li>
+    </NavigationMenuItem>
   )
 }
+
+interface NavCategoryTriggerProps
+  extends React.HTMLAttributes<HTMLButtonElement> {
+  title: string
+  icon: Icon
+}
+
+const NavCategoryTrigger = React.forwardRef<
+  HTMLButtonElement,
+  NavCategoryTriggerProps
+>(({ className, icon: Icon, title, ...props }, ref) => {
+  const [collapsed] = useCollapsed()
+
+  return (
+    <button
+      type="button"
+      {...props}
+      className={cn(
+        "flex flex-1 items-center justify-between px-3 py-4 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180",
+        className
+      )}
+    >
+      <div className="flex items-center gap-x-2">
+        <Icon className="h-4 w-4 shrink-0" />
+        <p
+          className={cn(
+            "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
+            collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+          )}
+        >
+          {title}
+        </p>
+      </div>
+      <ChevronDown
+        className={cn(
+          "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
+          collapsed ? "opacity-0" : "opacity-100"
+        )}
+      />
+    </button>
+  )
+})
+NavCategoryTrigger.displayName = "NavCategoryTrigger"
 
 interface NavLinkProps {
   href: string
@@ -193,70 +251,73 @@ const NavLink: React.FC<NavLinkProps> = ({
   const [collapsed] = useCollapsed()
 
   const pathname = usePathname()
+  const active = pathname.startsWith(href)
 
   return (
-    <li className="relative">
+    <div className="relative">
       <Tooltip open={!collapsed ? false : undefined} delayDuration={500}>
         <TooltipTrigger asChild>
-          <Link
-            href={href}
-            className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 "
-          >
-            {pathname === href && (
-              <motion.span
-                layoutId="bubble"
-                className={cn(
-                  "absolute inset-0 z-0 bg-accent",
-                  collapsed ? "w-12" : "w-56"
-                )}
-                style={{ borderRadius: 6 }}
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              />
-            )}
-            <div className="flex items-center">
-              <div className="relative">
-                {notifications && collapsed && (
+          <NavigationMenuLink active={active} asChild>
+            <Link
+              href={href}
+              className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 "
+            >
+              {active && (
+                <motion.span
+                  layoutId="bubble"
+                  className={cn(
+                    "absolute inset-0 z-0 bg-accent",
+                    collapsed ? "w-12" : "w-56"
+                  )}
+                  style={{ borderRadius: 6 }}
+                  transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                />
+              )}
+              <div className="flex items-center">
+                <div className="relative">
+                  {notifications && collapsed && (
+                    <motion.div
+                      layoutId={`${label} notification`}
+                      className={cn(
+                        "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
+                      )}
+                      style={{ borderRadius: 9999 }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    />
+                  )}
+                  <Icon className="relative z-10 h-6 w-6 shrink-0" />
+                </div>
+                <span
+                  className={cn(
+                    "relative z-10 w-32 max-w-full truncate text-lg transition-[margin,max-width,opacity] duration-500 ease-in-out",
+                    collapsed
+                      ? "ml-0 max-w-0 opacity-0"
+                      : "ml-4 max-w-full opacity-100"
+                  )}
+                >
+                  {label}
+                </span>
+              </div>
+              {notifications && !collapsed && (
+                <Badge asChild>
                   <motion.div
                     layoutId={`${label} notification`}
-                    className={cn(
-                      "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
-                    )}
-                    style={{ borderRadius: 9999 }}
+                    className="absolute right-0 z-10 mr-2"
                     transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                  />
-                )}
-                <Icon className="relative z-10 h-6 w-6 shrink-0" />
-              </div>
-              <span
-                className={cn(
-                  "relative z-10 w-32 max-w-full truncate text-lg transition-[margin,max-width,opacity] duration-500 ease-in-out",
-                  collapsed
-                    ? "ml-0 max-w-0 opacity-0"
-                    : "ml-4 max-w-full opacity-100"
-                )}
-              >
-                {label}
-              </span>
-            </div>
-            {notifications && !collapsed && (
-              <Badge asChild>
-                <motion.div
-                  layoutId={`${label} notification`}
-                  className="absolute right-0 z-10 mr-2"
-                  transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                  style={{ borderRadius: 9999 }}
-                >
-                  {notifications > 0 && notifications < 100
-                    ? notifications
-                    : "99+"}
-                </motion.div>
-              </Badge>
-            )}
-          </Link>
+                    style={{ borderRadius: 9999 }}
+                  >
+                    {notifications > 0 && notifications < 100
+                      ? notifications
+                      : "99+"}
+                  </motion.div>
+                </Badge>
+              )}
+            </Link>
+          </NavigationMenuLink>
         </TooltipTrigger>
         <TooltipContent side="right">{label}</TooltipContent>
       </Tooltip>
-    </li>
+    </div>
   )
 }
 
