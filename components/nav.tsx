@@ -57,7 +57,6 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
           {...props}
         >
           <nav className="flex h-full flex-col">{children}</nav>
-          <ProfileCard />
         </aside>
       </NavContext.Provider>
     )
@@ -65,7 +64,9 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
 )
 Nav.displayName = "Nav"
 
-const NavHeader: React.FC = () => {
+const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  ...props
+}) => {
   const [collapsed, setCollapsed] = useCollapsed()
 
   const toggleCollapsed = () => {
@@ -74,17 +75,14 @@ const NavHeader: React.FC = () => {
   }
 
   return (
-    <div className="relative mb-8 ml-1 flex w-full items-center text-card-foreground">
-      <span
+    <div className="relative mb-8 flex w-full items-center">
+      <div
         className={cn(
-          "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg font-bold transition-[max-width,opacity] duration-500 ease-in-out",
+          "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity] duration-500 ease-in-out",
           collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
         )}
-      >
-        {/* <img src={reactLogo} className="w-10 shrink-0" alt="Laplace Logo" /> */}
-        <Icons.Logo className="h-8 w-8 shrink-0 fill-primary" />
-        Easy Intake
-      </span>
+        {...props}
+      />
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant={"ghost"} onClick={toggleCollapsed} className="px-2">
@@ -221,7 +219,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   )
 }
 
-const ProfileCard = React.forwardRef<
+const NavProfile = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
@@ -257,7 +255,7 @@ const ProfileCard = React.forwardRef<
     </Card>
   )
 })
-ProfileCard.displayName = "ProfileCard"
+NavProfile.displayName = "ProfileCard"
 
 interface SeperatorProps extends React.HTMLAttributes<HTMLElement> {
   title?: string
@@ -301,4 +299,5 @@ export {
   NavCategory,
   NavLink,
   NavSeperator,
+  NavProfile,
 }
