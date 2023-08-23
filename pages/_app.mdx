@@ -25,16 +25,20 @@ export default function App({ Component, pageProps }) {
           </NavHeader>
           <NavContent>
             <NavCategory title="Cats" icon={Icons.Edit}>
+              <NavLink href="/a" icon={Icons.Mic} label="A" notifications={1} />
               <NavLink
-                href="/"
-                icon={Icons.Mic}
-                label="Summarize"
-                notifications={1}
-              />
-              <NavLink
-                href="/test"
+                href="/b"
                 icon={Icons.Trash}
-                label="Test"
+                label="B"
+                notifications={99}
+              />
+            </NavCategory>
+            <NavCategory title="Cats2" icon={Icons.Edit}>
+              <NavLink href="/c" icon={Icons.Mic} label="C" notifications={1} />
+              <NavLink
+                href="/d"
+                icon={Icons.Trash}
+                label="D"
                 notifications={99}
               />
             </NavCategory>

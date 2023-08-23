@@ -47,6 +47,18 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
       if (stored === "true") setCollapsed(true)
     }, [])
 
+    // Controlled state of Accordion and NavigationMenu components
+    const [accordionValue, setAccordionValue] = useState([])
+    const [accordionValuePrev, setAccordionValuePrev] = useState([])
+
+    useEffect(() => {
+      if (collapsed) {
+        setAccordionValuePrev(accordionValue)
+        setAccordionValue([])
+      } else setAccordionValue(accordionValuePrev)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [collapsed])
+
     return (
       <NavContext.Provider value={{ collapsed, setCollapsed }}>
         <aside
@@ -58,7 +70,14 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
           ref={ref}
           {...props}
         >
-          <nav className="flex h-full flex-col">{children}</nav>
+          <Accordion
+            asChild
+            type="multiple"
+            value={accordionValue}
+            onValueChange={setAccordionValue}
+          >
+            <nav className="flex h-full flex-col">{children}</nav>
+          </Accordion>
         </aside>
       </NavContext.Provider>
     )
@@ -122,38 +141,38 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   children,
 }) => {
   const [collapsed] = useCollapsed()
-  const [value, setValue] = useState("")
-
-  useEffect(() => {
-    if (collapsed) setValue("")
-  }, [collapsed])
 
   return (
     <li className="relative">
-      <Accordion
-        type="single"
-        collapsible
-        value={value}
-        onValueChange={setValue}
-      >
-        <AccordionItem value="content">
-          <AccordionHeader className="flex">
-            <AccordionTrigger className="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180">
-              <div className="flex items-center gap-x-2">
-                <Icon className="h-4 w-4 shrink-0" />
-                <p className="text-sm uppercase">{title}</p>
-              </div>
-              <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-            </AccordionTrigger>
-          </AccordionHeader>
-          <AccordionContent
-            asChild
-            className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-          >
-            <ul className="relative w-full space-y-2 pb-4">{children}</ul>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <AccordionItem value={title}>
+        <AccordionHeader className="flex">
+          <AccordionTrigger className="flex flex-1 items-center justify-between px-3 py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180">
+            <div className="flex items-center gap-x-2">
+              <Icon className="h-4 w-4 shrink-0" />
+              <p
+                className={cn(
+                  "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
+                  collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+                )}
+              >
+                {title}
+              </p>
+            </div>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
+                collapsed ? "opacity-0" : "opacity-100"
+              )}
+            />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent
+          asChild
+          className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+        >
+          <ul className="relative w-full space-y-2 pb-4">{children}</ul>
+        </AccordionContent>
+      </AccordionItem>
     </li>
   )
 }
