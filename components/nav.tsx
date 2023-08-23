@@ -64,7 +64,7 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
       >
         <aside
           className={cn(
-            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 transition-[width] duration-500 ease-in-out",
+            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 text-card-foreground transition-[width] duration-500 ease-in-out",
             collapsed ? "w-[4.5rem]" : "w-[15.5rem]",
             className
           )}
