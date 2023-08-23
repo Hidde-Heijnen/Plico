@@ -1,25 +1,12 @@
-"use client"
-
 import React, { useContext, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   Accordion,
   AccordionContent,
-  AccordionHeader,
   AccordionItem,
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuItemProps,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@radix-ui/react-navigation-menu"
 import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
@@ -157,7 +144,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   const [collapsed] = useCollapsed()
 
   return (
-    <AccordionItem value={title} {...props}>
+    <AccordionItem value={title} {...props} disabled={collapsed}>
       <AccordionTrigger className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180">
         <div className="flex items-center gap-x-2">
           <Icon className="relative z-10 h-6 w-6 shrink-0" />
