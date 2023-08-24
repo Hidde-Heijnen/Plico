@@ -109,9 +109,12 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"ghost"} onClick={toggleCollapsed} className="px-2">
+          <button
+            onClick={toggleCollapsed}
+            className="inline-flex h-10 items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 "
+          >
             <Icons.NavCollapseIcon className="shrink-0" collapsed={collapsed} />
-          </Button>
+          </button>
         </TooltipTrigger>
         <TooltipContent side="right">
           {collapsed ? "Expand" : "Collapse"} sidebar
@@ -130,7 +133,7 @@ const NavContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 const NavFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
 }) => {
-  return <div className="relative mt-auto w-full space-y-2">{children}</div>
+  return <div className="relative mt-auto w-full space-y-2 ">{children}</div>
 }
 
 interface NavCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
