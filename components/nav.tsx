@@ -99,11 +99,11 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   }
 
   return (
-    <div className="relative mb-8 flex w-full items-center justify-between">
+    <div className="relative mb-8 ml-1 flex w-full items-center">
       <div
         className={cn(
-          "flex items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity] duration-500 ease-in-out",
-          collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+          "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity,padding] duration-500 ease-in-out",
+          collapsed ? "max-w-0 pl-0 opacity-0" : "max-w-full pl-1 opacity-100"
         )}
         {...props}
       />
