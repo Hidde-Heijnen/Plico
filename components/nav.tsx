@@ -175,7 +175,9 @@ const NavCategory: React.FC<NavCategoryProps> = ({
             <p
               className={cn(
                 "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
-                collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+                collapsed
+                  ? "max-w-0 opacity-0 group-[.category]:max-w-full group-[.category]:opacity-100"
+                  : "max-w-full opacity-100"
               )}
             >
               {title}
@@ -191,11 +193,9 @@ const NavCategory: React.FC<NavCategoryProps> = ({
       </AccordionHeader>
       <AccordionContent
         className={cn(
-          "category group relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+          "category group relative ml-4 space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
           // When sidebar collapsed, the content is absolute positioned to the right of the sidebar
-          collapsed
-            ? "absolute left-full top-0 ml-4 w-fit bg-card"
-            : "w-full pl-4"
+          collapsed ? "absolute left-full top-0 w-fit bg-card" : "w-full"
         )}
       >
         {children}
