@@ -166,13 +166,13 @@ const NavCategory: React.FC<NavCategoryProps> = ({
           }}
           // Prevent the accordion from opening when the category is clicked (when sidebar collapsed)
           onClick={(e) => collapsed && e.preventDefault()}
-          className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180"
+          className="flex w-full flex-1 items-center justify-between rounded-md p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180"
         >
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center">
             <Icon className="relative z-10 h-6 w-6 shrink-0" />
             <p
               className={cn(
-                "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
+                "ml-4 text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
                 collapsed
                   ? "max-w-0 opacity-0 group-[.category]:max-w-full group-[.category]:opacity-100"
                   : "max-w-full opacity-100"
