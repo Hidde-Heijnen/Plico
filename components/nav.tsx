@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
+import * as NavigationMenu from "@radix-ui/react-navigation-menu"
 import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
@@ -148,57 +149,36 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   const { collapsed, accordionValue, setAccordionValue } = useNavContext()
 
   return (
-    <AccordionItem
-      value={title}
-      {...props}
-      onMouseLeave={() => {
-        // Close the accordion if the mouse leaves the category, be it the trigger button or its content (when sidebar collapsed)
-        if (collapsed && accordionValue.includes(title))
-          setAccordionValue(accordionValue.filter((v) => v !== title))
-      }}
-    >
-      <AccordionHeader>
-        <AccordionTrigger
-          onMouseEnter={() => {
-            // Open the accordion if the mouse enters the category trigger (when sidebar collapsed)
-            if (collapsed && !accordionValue.includes(title))
-              setAccordionValue([title, ...accordionValue])
-          }}
-          // Prevent the accordion from opening when the category is clicked (when sidebar collapsed)
-          onClick={(e) => collapsed && e.preventDefault()}
-          className="flex w-full flex-1 items-center justify-between rounded-md p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180"
-        >
-          <div className="flex items-center">
-            <Icon className="relative z-10 h-6 w-6 shrink-0" />
-            <p
-              className={cn(
-                "ml-4 text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
-                collapsed
-                  ? "max-w-0 opacity-0 group-[.category]:max-w-full group-[.category]:opacity-100"
-                  : "max-w-full opacity-100"
-              )}
-            >
-              {title}
-            </p>
-          </div>
-          <ChevronDown
+    <NavigationMenu.Root>
+      <NavigationMenu.List>
+        <NavigationMenu.Item>
+          <NavigationMenu.Trigger asChild>
+            <div className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 ">
+              <Icon className="relative z-10 h-6 w-6 shrink-0" />
+              <span
+                className={cn(
+                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-500 ease-in-out",
+                  collapsed &&
+                    "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
+                )}
+              >
+                {title}
+              </span>
+            </div>
+          </NavigationMenu.Trigger>
+          <NavigationMenu.Content
             className={cn(
-              "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
-              collapsed ? "opacity-0" : "opacity-100"
+              "absolute left-full top-0 z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
             )}
-          />
-        </AccordionTrigger>
-      </AccordionHeader>
-      <AccordionContent
-        className={cn(
-          "category group relative ml-4 space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-          // When sidebar collapsed, the content is absolute positioned to the right of the sidebar
-          collapsed ? "absolute left-full top-0 w-fit bg-card" : "w-full"
-        )}
-      >
-        {children}
-      </AccordionContent>
-    </AccordionItem>
+          >
+            <NavigationMenu.Sub>
+              <NavigationMenu.List>hello</NavigationMenu.List>
+              <NavigationMenu.Viewport />
+            </NavigationMenu.Sub>
+          </NavigationMenu.Content>
+        </NavigationMenu.Item>
+      </NavigationMenu.List>
+    </NavigationMenu.Root>
   )
 }
 
