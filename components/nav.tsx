@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -282,9 +283,18 @@ const NavProfile = React.forwardRef<
     >
       <Avatar className="h-10 w-10">
         <AvatarImage
-          src="https://neumarksurgery.com/wp-content/uploads/2022/12/Dr-Harish-Mithiran-Thoracic-Surgeon-Singapore.jpg"
+          asChild
+          src="/images/profile-picture.jpg"
           className="object-cover"
-        />
+        >
+          <Image
+            src="/images/profile-picture.jpg"
+            alt="logo"
+            width={40}
+            height={40}
+          />
+        </AvatarImage>
+        <AvatarImage />
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
       <div
