@@ -1,6 +1,8 @@
 import {
+  Book,
   Check,
   Download,
+  Home,
   LucideIcon,
   LucideProps,
   Mic,
@@ -69,4 +71,6 @@ export const Icons = {
   Summarize: SendHorizonal,
   Settings: Settings,
   Check: Check,
+  Home: Home,
+  Docs: Book,
 }

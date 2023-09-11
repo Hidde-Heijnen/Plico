@@ -1,16 +1,20 @@
 {
   "index": {
     "title": "Home",
-    "type": "page"
+    "theme": {
+      "sidebar": false
+    }
   },
   "docs": {
     "title": "Docs",
-    "type": "page"
+    "theme": {
+      "sidebar": false
+    }
   },
   "contact": {
     "title": "Contact ↗",
     "type": "page",
-    "href": "https://twitter.com/shuding_",
+    "href": "https://twitter.com/piros_dev",
     "newWindow": true
   }
 }

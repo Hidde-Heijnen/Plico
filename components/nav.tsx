@@ -199,7 +199,12 @@ const NavLink: React.FC<NavLinkProps> = ({
   const { collapsed } = useNavContext()
 
   const pathname = usePathname()
-  const active = pathname.startsWith(href)
+  let isActive: boolean
+  if (href === "/") {
+    isActive = pathname === href
+  } else {
+    isActive = pathname.startsWith(href)
+  }
 
   return (
     <div className="relative">
@@ -209,7 +214,7 @@ const NavLink: React.FC<NavLinkProps> = ({
             href={href}
             className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 "
           >
-            {active && (
+            {isActive && (
               <motion.span
                 layoutId="bubble"
                 className={cn(
@@ -236,7 +241,7 @@ const NavLink: React.FC<NavLinkProps> = ({
               </div>
               <span
                 className={cn(
-                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-500 ease-in-out",
+                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg leading-none opacity-100 transition-[margin,max-width,opacity] duration-500 ease-in-out",
                   collapsed &&
                     "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
                 )}

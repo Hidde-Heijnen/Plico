@@ -20,10 +20,22 @@ export default function App({ Component, pageProps }) {
       <div className="fixed flex h-screen w-screen">
         <Nav size={10}>
           <NavHeader>
-            <Icons.Logo className="w-6 h-6 shrink-0 fill-primary" />
+            <Icons.Logo className="h-6 w-6 shrink-0 fill-primary" />
             <p className="font-bold">Easy Intake</p>
           </NavHeader>
           <NavContent>
+            <NavLink
+              href="/"
+              icon={Icons.Home}
+              label="Home"
+              notifications={1}
+            />
+            <NavLink
+              href="/docs"
+              icon={Icons.Docs}
+              label="Docs"
+              notifications={99}
+            />
             <NavCategory title="Cats" icon={Icons.Edit}>
               <NavLink href="/a" icon={Icons.Mic} label="A" notifications={1} />
               <NavLink
@@ -47,13 +59,6 @@ export default function App({ Component, pageProps }) {
                 />
               </NavCategory>
             </NavCategory>
-            <NavLink href="/e" icon={Icons.Mic} label="E" notifications={1} />
-            <NavLink
-              href="/f"
-              icon={Icons.Trash}
-              label="F"
-              notifications={99}
-            />
           </NavContent>
           <NavFooter>
             <NavLink href="/settings" icon={Icons.Settings} label="Settings" />
