@@ -14,10 +14,12 @@ import {
 
 import { TooltipProvider } from "@/components/ui/tooltip"
 
+import { ScrollArea } from "@/components/ui/scroll-area"
+
 export default function App({ Component, pageProps }) {
   return (
     <TooltipProvider>
-      <div className="fixed flex h-screen w-screen">
+      <div className="flex h-screen w-screen">
         <Nav size={10}>
           <NavHeader>
             <Icons.Logo className="h-6 w-6 shrink-0 fill-primary" />
@@ -65,10 +67,13 @@ export default function App({ Component, pageProps }) {
             <NavProfile />
           </NavFooter>
         </Nav>
-        <main className="w-full overflow-y-scroll">
-          <Component {...pageProps} />
-        </main>
+        <ScrollArea className="w-full">
+          <main >
+            <Component {...pageProps} />
+          </main>
+        </ScrollArea>
       </div>
     </TooltipProvider>
-  )
+
+)
 }
