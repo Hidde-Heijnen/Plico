@@ -127,13 +127,13 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 const NavContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
 }) => {
-  return <div className="relative w-full space-y-2">{children}</div>
+  return <ul className="relative w-full space-y-2">{children}</ul>
 }
 
 const NavFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
 }) => {
-  return <div className="relative mt-auto w-full space-y-2 ">{children}</div>
+  return <ul className="relative mt-auto w-full space-y-2 ">{children}</ul>
 }
 
 interface NavCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -207,7 +207,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   }
 
   return (
-    <div className="relative">
+    <li className="relative">
       <Tooltip open={!collapsed ? false : undefined} delayDuration={500}>
         <TooltipTrigger asChild>
           <Link
@@ -265,7 +265,7 @@ const NavLink: React.FC<NavLinkProps> = ({
         </TooltipTrigger>
         <TooltipContent side="right">{label}</TooltipContent>
       </Tooltip>
-    </div>
+    </li>
   )
 }
 
