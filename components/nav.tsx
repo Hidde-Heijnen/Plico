@@ -272,7 +272,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                       "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
                     )}
                     style={{ borderRadius: 9999 }}
-                    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                   />
                 )}
                 <Icon className="relative z-10 h-6 w-6 shrink-0" />
@@ -291,7 +291,7 @@ const NavLink: React.FC<NavLinkProps> = ({
               <motion.div
                 layoutId={`${label} notification`}
                 className="absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 style={{ borderRadius: 9999 }}
               >
                 {notifications > 0 && notifications < 100
