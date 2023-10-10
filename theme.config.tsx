@@ -2,7 +2,7 @@ import React from "react"
 import { DocsThemeConfig } from "nextra-theme-docs"
 
 const config: DocsThemeConfig = {
-  logo: "",
+  logo: null,
   project: {
     link: "https://github.com/Hidde-Heijnen/plico",
   },

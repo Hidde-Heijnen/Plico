@@ -35,34 +35,6 @@ export const Icons = {
       />
     </svg>
   ),
-  NavCollapseIcon: ({
-    collapsed,
-    ...props
-  }: LucideProps & { collapsed: boolean }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-      <line x1="15" x2="15" y1="3" y2="21" />
-      <path
-        className={cn(
-          collapsed ? "rotate-0" : "rotate-180",
-          "transition-transform duration-500 ease-in-out"
-        )}
-        style={{ transformOrigin: "40%" }}
-        d="m8 9 3 3-3 3"
-      />
-    </svg>
-  ),
   Mic: Mic,
   Pause: Pause,
   Trash: Trash2,

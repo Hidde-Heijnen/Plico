@@ -10,7 +10,7 @@ import {
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
 import * as NavigationMenu from "@radix-ui/react-navigation-menu"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -60,7 +60,12 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
 
     return (
       <NavContext.Provider
-        value={{ collapsed, setCollapsed, accordionValue, setAccordionValue }}
+        value={{
+          collapsed,
+          setCollapsed,
+          accordionValue,
+          setAccordionValue,
+        }}
       >
         <aside
           className={cn(
@@ -113,7 +118,7 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             onClick={toggleCollapsed}
             className="inline-flex h-10 items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 "
           >
-            <Icons.NavCollapseIcon className="shrink-0" collapsed={collapsed} />
+            <NavCollapseIcon />
           </button>
         </TooltipTrigger>
         <TooltipContent side="right">
@@ -121,6 +126,39 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
         </TooltipContent>
       </Tooltip>
     </div>
+  )
+}
+
+const NavCollapseIcon: React.FC<React.HTMLAttributes<HTMLOrSVGElement>> = ({
+  ...props
+}) => {
+  const { collapsed } = useNavContext()
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={"shrink-0"}
+      {...props}
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+      <line x1="15" x2="15" y1="3" y2="21" />
+      <path
+        className={cn(
+          collapsed ? "rotate-0" : "rotate-180",
+          "transition-transform duration-500 ease-in-out"
+        )}
+        style={{ transformOrigin: "40%" }}
+        d="m8 9 3 3-3 3"
+      />
+    </svg>
   )
 }
 
