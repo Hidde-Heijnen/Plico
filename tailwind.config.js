@@ -7,7 +7,7 @@ module.exports = {
     "./app/**/*.{ts,tsx,mdx}",
     "./src/**/*.{ts,tsx,mdx}",
   ],
-  safelist: ['dark'],
+  safelist: ["dark"],
   theme: {
     container: {
       center: true,
@@ -70,6 +70,9 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      transitionDuration: {
+        plico: "var(--plico-animation-d)",
       },
     },
   },

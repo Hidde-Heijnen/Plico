@@ -69,7 +69,7 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
       >
         <aside
           className={cn(
-            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 text-card-foreground transition-[width] duration-500 ease-in-out",
+            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 text-card-foreground transition-[width] duration-plico ease-in-out [--plico-animation-d:2000ms]",
             collapsed ? "w-[4.5rem]" : "w-[15.5rem]",
             className
           )}
@@ -104,10 +104,10 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   }
 
   return (
-    <div className="relative mb-8 ml-1 flex w-full items-center">
+    <div className="relative mb-8 ml-1 flex w-full items-center duration-plico">
       <div
         className={cn(
-          "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity,padding] duration-500 ease-in-out",
+          "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity,padding] duration-plico ease-in-out",
           collapsed ? "max-w-0 pl-0 opacity-0" : "max-w-full pl-1 opacity-100"
         )}
         {...props}
@@ -153,7 +153,7 @@ const NavCollapseIcon: React.FC<React.HTMLAttributes<HTMLOrSVGElement>> = ({
       <path
         className={cn(
           collapsed ? "rotate-0" : "rotate-180",
-          "transition-transform duration-500 ease-in-out"
+          "transition-transform duration-plico ease-in-out"
         )}
         style={{ transformOrigin: "40%" }}
         d="m8 9 3 3-3 3"
@@ -196,7 +196,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
               <Icon className="relative z-10 h-6 w-6 shrink-0" />
               <span
                 className={cn(
-                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-500 ease-in-out",
+                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-plico ease-in-out",
                   collapsed &&
                     "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
                 )}
@@ -244,6 +244,22 @@ const NavLink: React.FC<NavLinkProps> = ({
     isActive = pathname.startsWith(href)
   }
 
+  const [transitionDuration, setTransitionDuration] = useState<number>(0.5) // Default value
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const computedStyle = window.getComputedStyle(document.documentElement)
+      const durationValue = parseFloat(
+        computedStyle.getPropertyValue("--plico-animation-d")
+      )
+      if (!isNaN(durationValue)) {
+        setTransitionDuration(durationValue)
+      }
+    }
+  }, [])
+
+  console.log(transitionDuration)
+
   return (
     <li className="relative">
       <Tooltip open={!collapsed ? false : undefined} delayDuration={500}>
@@ -260,7 +276,10 @@ const NavLink: React.FC<NavLinkProps> = ({
                   collapsed ? "w-12" : "w-56"
                 )}
                 style={{ borderRadius: 6 }}
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                transition={{
+                  duration: transitionDuration,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
               />
             )}
             <div className="flex items-center">
@@ -272,14 +291,17 @@ const NavLink: React.FC<NavLinkProps> = ({
                       "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
                     )}
                     style={{ borderRadius: 9999 }}
-                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                    transition={{
+                      duration: transitionDuration,
+                      ease: [0.4, 0, 0.2, 1],
+                    }}
                   />
                 )}
                 <Icon className="relative z-10 h-6 w-6 shrink-0" />
               </div>
               <span
                 className={cn(
-                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg leading-none opacity-100 transition-[margin,max-width,opacity] duration-500 ease-in-out",
+                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg leading-none opacity-100 transition-[margin,max-width,opacity] duration-plico ease-in-out",
                   collapsed &&
                     "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
                 )}
@@ -291,7 +313,10 @@ const NavLink: React.FC<NavLinkProps> = ({
               <motion.div
                 layoutId={`${label} notification`}
                 className="absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                transition={{
+                  duration: transitionDuration,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
                 style={{ borderRadius: 9999 }}
               >
                 {notifications > 0 && notifications < 100
@@ -316,7 +341,7 @@ const NavProfile = React.forwardRef<
   return (
     <Card
       className={cn(
-        "flex items-center gap-x-2 p-2 transition-[opacity,padding] duration-500 ease-in-out",
+        "flex items-center gap-x-2 p-2 transition-[opacity,padding] duration-plico ease-in-out",
         collapsed
           ? "border-border/0 pl-1 shadow-transparent"
           : "border-border/100 pl-2"
@@ -343,7 +368,7 @@ const NavProfile = React.forwardRef<
       <div
         className={cn(
           collapsed ? "w-0 opacity-0" : "w-full opacity-100",
-          "truncate transition-[width,opacity] duration-500 ease-in-out"
+          "truncate transition-[width,opacity] duration-plico ease-in-out"
         )}
       >
         <p className="truncate font-bold">Johnathan Doeghy</p>
@@ -377,7 +402,7 @@ const NavSeperator: React.FC<SeperatorProps> = ({
       {title && (
         <p
           className={cn(
-            "absolute inset-0 flex w-fit items-center bg-card pl-1 pr-3 text-lg capitalize text-card-foreground transition-[width,opacity] duration-500 ease-in-out",
+            "absolute inset-0 flex w-fit items-center bg-card pl-1 pr-3 text-lg capitalize text-card-foreground transition-[width,opacity] duration-plico ease-in-out",
             collapsed && "w-0 opacity-0"
           )}
         >
