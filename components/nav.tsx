@@ -1,3 +1,4 @@
+import { log } from "console"
 import React, { useContext, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -69,7 +70,7 @@ const Nav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
       >
         <aside
           className={cn(
-            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 text-card-foreground transition-[width] duration-plico ease-in-out [--plico-animation-d:2000ms]",
+            "flex h-screen shrink-0 flex-col justify-between border-r border-border bg-card p-3 text-card-foreground transition-[width] duration-plico ease-in-out",
             collapsed ? "w-[4.5rem]" : "w-[15.5rem]",
             className
           )}
@@ -254,7 +255,7 @@ const NavLink: React.FC<NavLinkProps> = ({
       )
       if (!isNaN(durationValue)) {
         setTransitionDuration(durationValue)
-      }
+      } else console.warn("Invalid --plico-animation-d value")
     }
   }, [])
 
@@ -271,10 +272,7 @@ const NavLink: React.FC<NavLinkProps> = ({
             {isActive && (
               <motion.span
                 layoutId="bubble"
-                className={cn(
-                  "absolute inset-0 z-0 bg-accent",
-                  collapsed ? "w-12" : "w-56"
-                )}
+                className={"absolute inset-0 z-0 w-full bg-accent"}
                 style={{ borderRadius: 6 }}
                 transition={{
                   duration: transitionDuration,
