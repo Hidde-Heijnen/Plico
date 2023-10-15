@@ -66,10 +66,20 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)", opacity: 1 },
           to: { height: 0, opacity: 0 },
         },
+        "accordion-right": {
+          from: { width: 0, opacity: 0 },
+          to: { width: "var(--radix-accordion-content-width)", opacity: 1 },
+        },
+        "accordion-left": {
+          from: { width: "var(--radix-accordion-content-width)", opacity: 1 },
+          to: { width: 0, opacity: 0 },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-right": "accordion-right 0.2s ease-out",
+        "accordion-left": "accordion-left 0.2s ease-out",
       },
       transitionDuration: {
         plico: "var(--plico-animation-d)",

@@ -184,41 +184,50 @@ const NavCategory: React.FC<NavCategoryProps> = ({
   title,
   icon: Icon,
   children,
+  className,
   ...props
 }) => {
-  const { collapsed, accordionValue, setAccordionValue } = useNavContext()
+  const { collapsed } = useNavContext()
 
   return (
-    <NavigationMenu.Root>
-      <NavigationMenu.List>
-        <NavigationMenu.Item>
-          <NavigationMenu.Trigger asChild>
-            <div className="flex h-12 items-center rounded-md p-3 text-foreground hover:bg-accent/30 ">
-              <Icon className="relative z-10 h-6 w-6 shrink-0" />
-              <span
-                className={cn(
-                  "relative z-10 ml-4 w-32 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-plico ease-in-out",
-                  collapsed &&
-                    "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
-                )}
-              >
-                {title}
-              </span>
-            </div>
-          </NavigationMenu.Trigger>
-          <NavigationMenu.Content
+    <AccordionItem
+      value={title}
+      className={cn("relative", className)}
+      {...props}
+    >
+      <AccordionHeader>
+        <AccordionTrigger className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180">
+          <div className="flex items-center gap-x-2">
+            <Icon className="relative z-10 h-6 w-6 shrink-0" />
+            <p
+              className={cn(
+                "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
+                collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+              )}
+            >
+              {title}
+            </p>
+          </div>
+          <ChevronDown
             className={cn(
-              "absolute left-full top-0 z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+              "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
+              collapsed ? "opacity-0" : "opacity-100"
             )}
-          >
-            <NavigationMenu.Sub>
-              <NavigationMenu.List>hello</NavigationMenu.List>
-              <NavigationMenu.Viewport />
-            </NavigationMenu.Sub>
-          </NavigationMenu.Content>
-        </NavigationMenu.Item>
-      </NavigationMenu.List>
-    </NavigationMenu.Root>
+          />
+        </AccordionTrigger>
+      </AccordionHeader>
+      <AccordionContent
+        className={cn(
+          "category group relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in",
+          // When sidebar collapsed, the content is absolute positioned to the right of the sidebar
+          collapsed
+            ? "absolute left-full top-0 ml-4 w-full border bg-card data-[state=closed]:animate-accordion-left data-[state=open]:animate-accordion-right"
+            : "w-full pl-4 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+        )}
+      >
+        {children}
+      </AccordionContent>
+    </AccordionItem>
   )
 }
 
@@ -258,8 +267,6 @@ const NavLink: React.FC<NavLinkProps> = ({
       } else console.warn("Invalid --plico-animation-d value")
     }
   }, [])
-
-  console.log(transitionDuration)
 
   return (
     <li className="relative">
