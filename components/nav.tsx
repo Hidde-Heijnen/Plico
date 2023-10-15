@@ -196,24 +196,26 @@ const NavCategory: React.FC<NavCategoryProps> = ({
       {...props}
     >
       <AccordionHeader>
-        <AccordionTrigger className="flex w-full flex-1 items-center justify-between p-3 font-medium transition-all duration-300 hover:underline [&[data-state=open]>svg]:rotate-180">
-          <div className="flex items-center gap-x-2">
+        <AccordionTrigger asChild>
+          <div className=" flex h-12 w-full items-center rounded-md p-3 text-foreground hover:bg-accent/30 [&[data-state=open]>.chevron]:rotate-180">
+            <div></div>
             <Icon className="relative z-10 h-6 w-6 shrink-0" />
-            <p
+            <span
               className={cn(
-                "text-sm uppercase transition-[max-width,opacity] duration-300 ease-in-out",
-                collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
+                "relative z-10 ml-4 w-32 grow truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-plico ease-in-out",
+                collapsed &&
+                  "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
               )}
             >
               {title}
-            </p>
+            </span>
+            <ChevronDown
+              className={cn(
+                "chevron h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
+                collapsed ? "opacity-0" : "opacity-100"
+              )}
+            />
           </div>
-          <ChevronDown
-            className={cn(
-              "h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
-              collapsed ? "opacity-0" : "opacity-100"
-            )}
-          />
         </AccordionTrigger>
       </AccordionHeader>
       <AccordionContent
@@ -221,7 +223,7 @@ const NavCategory: React.FC<NavCategoryProps> = ({
           "category group relative space-y-2 overflow-hidden text-sm transition-all duration-300 animate-in fade-in",
           // When sidebar collapsed, the content is absolute positioned to the right of the sidebar
           collapsed
-            ? "absolute left-full top-0 ml-4 w-full border bg-card data-[state=closed]:animate-accordion-left data-[state=open]:animate-accordion-right"
+            ? "absolute left-full top-0 ml-4 w-full rounded-md border bg-card data-[state=closed]:animate-accordion-left data-[state=open]:animate-accordion-right"
             : "w-full pl-4 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
         )}
       >
@@ -293,7 +295,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                   <motion.div
                     layoutId={`${label} notification`}
                     className={cn(
-                      "absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
+                      "notification absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
                     )}
                     style={{ borderRadius: 9999 }}
                     transition={{
@@ -317,7 +319,7 @@ const NavLink: React.FC<NavLinkProps> = ({
             {notifications && !collapsed && (
               <motion.div
                 layoutId={`${label} notification`}
-                className="absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="notification absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 transition={{
                   duration: transitionDuration,
                   ease: [0.4, 0, 0.2, 1],
