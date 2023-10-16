@@ -3,8 +3,8 @@ import "@/global.css"
 import { Icons } from "@/components/icons"
 import {
   Nav,
-  NavCategory,
   NavContent,
+  NavExtendable,
   NavFooter,
   NavHeader,
   NavLink,
@@ -38,14 +38,14 @@ export default function App({ Component, pageProps }) {
               label="Docs"
               notifications={99}
             />
-            <NavCategory title="Cats" icon={Icons.Edit}>
+            <NavExtendable title="Cats" icon={Icons.Edit}>
               <NavLink href="/a" icon={Icons.Mic} label="A" notifications={1} />
               <NavLink
                 href="/b"
                 icon={Icons.Trash}
                 label="B"
               />
-              <NavCategory title="Cats2" icon={Icons.Mic}>
+              <NavExtendable title="Cats2" icon={Icons.Mic}>
                 <NavLink
                   href="/c"
                   icon={Icons.Mic}
@@ -58,8 +58,8 @@ export default function App({ Component, pageProps }) {
                   notifications={2}
 
                 />
-              </NavCategory>
-            </NavCategory>
+              </NavExtendable>
+            </NavExtendable>
           </NavContent>
           <NavFooter>
             <NavLink href="/settings" icon={Icons.Settings} label="Settings" />

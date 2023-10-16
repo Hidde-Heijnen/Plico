@@ -175,12 +175,12 @@ const NavFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return <ul className="relative mt-auto w-full space-y-2 ">{children}</ul>
 }
 
-interface NavCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NavExtendableProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
   icon: Icon
 }
 
-const NavCategory: React.FC<NavCategoryProps> = ({
+const NavExtendable: React.FC<NavExtendableProps> = ({
   title,
   icon: Icon,
   children,
@@ -425,7 +425,7 @@ export {
   NavHeader,
   NavContent,
   NavFooter,
-  NavCategory,
+  NavExtendable as NavCategory,
   NavLink,
   NavSeperator,
   NavProfile,
