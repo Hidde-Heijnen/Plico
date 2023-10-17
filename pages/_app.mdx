@@ -3,6 +3,7 @@ import "@/global.css"
 import { Icons } from "@/components/icons"
 import {
   Nav,
+  NavCategory,
   NavCollapsableItem,
   NavContent,
   NavFooter,
@@ -26,40 +27,34 @@ export default function App({ Component, pageProps }) {
             <p className="font-bold">Plico</p>
           </NavHeader>
           <NavContent>
-            <NavLink
-              href="/"
-              icon={Icons.Home}
-              label="Home"
-              notifications={1}
-            />
-            <NavLink
-              href="/docs"
-              icon={Icons.Docs}
-              label="Docs"
-              notifications={99}
-            />
-            <NavCollapsableItem title="Cats" icon={Icons.Edit}>
-              <NavLink href="/a" icon={Icons.Mic} label="A" notifications={1} />
-              <NavLink
-                href="/b"
-                icon={Icons.Trash}
-                label="B"
-              />
-              <NavCollapsableItem title="Cats2" icon={Icons.Mic}>
-                <NavLink
-                  href="/c"
-                  icon={Icons.Mic}
-                  label="C"
-                />
-                <NavLink
-                  href="/d"
-                  icon={Icons.Trash}
-                  label="D"
-                  notifications={2}
-
-                />
-              </NavCollapsableItem>
-            </NavCollapsableItem>
+            <NavCategory label="blalaal" links={[
+              {
+                href:"/",
+                icon:Icons.Home,
+                label:"Home",
+                notifications:1
+              },
+              {
+                href:"/docs",
+                icon:Icons.Docs,
+                label:"Docs",
+                notifications:99
+              }
+            ]}/>
+            <NavCategory label="blalaal" links={[
+              {
+                href:"/bla",
+                icon:Icons.Home,
+                label:"Home",
+                notifications:1
+              },
+              {
+                href:"/bla",
+                icon:Icons.Docs,
+                label:"Docs",
+                notifications:99
+              }
+            ]}/>
           </NavContent>
           <NavFooter>
             <NavLink href="/settings" icon={Icons.Settings} label="Settings" />

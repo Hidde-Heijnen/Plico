@@ -108,7 +108,7 @@ const NavHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       <div
         className={cn(
           "flex grow items-center gap-x-2 overflow-hidden whitespace-nowrap text-lg transition-[max-width,opacity,padding] duration-plico ease-in-out",
-          collapsed ? "max-w-0 pl-0 opacity-0" : "max-w-full pl-1 opacity-100"
+          collapsed ? "max-w-0 pl-0 opacity-0" : "max-w-full pl-0 opacity-100"
         )}
         {...props}
       />
@@ -174,16 +174,52 @@ const NavFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return <ul className="relative mt-auto w-full space-y-2 ">{children}</ul>
 }
 
+type RootNavLinksProps = NavLinkProps | NavCollapsableItemProps
+
+interface NavCategoryItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  label?: string
+  icon?: Icon
+  links?: RootNavLinksProps[]
+}
+
+const NavCategory = React.forwardRef<HTMLDivElement, NavCategoryItemProps>(
+  ({ className, label, icon, links, ...props }, ref) => {
+    return (
+      <div ref={ref} className={cn("", className)} {...props}>
+        {label && (
+          <p className="ml-3 text-base font-semibold text-foreground/80">
+            {label}
+          </p>
+        )}
+        <nav className="flex flex-col gap-y-1.5">
+          {links.map((link, i) =>
+            "links" in link ? (
+              <NavCollapsableItem key={i} {...link} />
+            ) : (
+              <NavLink key={i} {...link} />
+            )
+          )}
+        </nav>
+      </div>
+    )
+  }
+)
+NavCategory.displayName = "AccordionItem"
+
 interface NavCollapsableItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string
-  icon: Icon
+  label: string
+  href?: string
+  icon?: Icon
+  notifications?: number
+  links?: RootNavLinksProps[]
 }
 
 const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
-  title,
+  label: title,
   icon: Icon,
   children,
   className,
+  links,
   ...props
 }) => {
   const { collapsed } = useNavContext()
@@ -197,7 +233,6 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
       <AccordionHeader>
         <AccordionTrigger asChild>
           <div className=" flex h-12 w-full items-center rounded-md p-3 text-foreground hover:bg-accent/30 [&[data-state=open]>.chevron]:rotate-180">
-            <div></div>
             <Icon className="relative z-10 h-6 w-6 shrink-0" />
             <span
               className={cn(
@@ -226,15 +261,23 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
             : "w-full pl-4 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
         )}
       >
-        {children}
+        links && (
+        {links.map((link, i) =>
+          "links" in link ? (
+            <NavCollapsableItem key={i} {...link} />
+          ) : (
+            <NavLink key={i} {...link} />
+          )
+        )}
+        )
       </AccordionContent>
     </AccordionItem>
   )
 }
 
 interface NavLinkProps {
-  href: string
-  icon: Icon
+  href?: string
+  icon?: Icon
   label: string
   notifications?: number
 }
@@ -386,11 +429,11 @@ const NavProfile = React.forwardRef<
 NavProfile.displayName = "ProfileCard"
 
 interface SeperatorProps extends React.HTMLAttributes<HTMLElement> {
-  title?: string
+  label?: string
 }
 
 const NavSeperator: React.FC<SeperatorProps> = ({
-  title,
+  label: title,
   className,
   ...props
 }) => {
@@ -421,11 +464,12 @@ const NavSeperator: React.FC<SeperatorProps> = ({
 
 export {
   Nav,
-  NavHeader,
+  NavCategory,
+  NavCollapsableItem,
   NavContent,
   NavFooter,
-  NavCollapsableItem,
+  NavHeader,
   NavLink,
-  NavSeperator,
   NavProfile,
+  NavSeperator,
 }
