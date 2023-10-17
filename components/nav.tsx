@@ -10,7 +10,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@radix-ui/react-accordion"
-import * as NavigationMenu from "@radix-ui/react-navigation-menu"
 import { motion, useReducedMotion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
@@ -425,7 +424,7 @@ export {
   NavHeader,
   NavContent,
   NavFooter,
-  NavExtendable as NavCategory,
+  NavExtendable,
   NavLink,
   NavSeperator,
   NavProfile,
