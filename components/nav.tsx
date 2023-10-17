@@ -191,7 +191,7 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
   return (
     <AccordionItem
       value={title}
-      className={cn("relative", className)}
+      className={cn("relative cursor-pointer", className)}
       {...props}
     >
       <AccordionHeader>
