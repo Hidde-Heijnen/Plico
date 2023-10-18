@@ -261,15 +261,14 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
             : "w-full pl-4 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
         )}
       >
-        links && (
-        {links.map((link, i) =>
-          "links" in link ? (
-            <NavCollapsableItem key={i} {...link} />
-          ) : (
-            <NavLink key={i} {...link} />
-          )
-        )}
-        )
+        {links &&
+          links.map((link, i) =>
+            "links" in link ? (
+              <NavCollapsableItem key={i} {...link} />
+            ) : (
+              <NavLink key={i} {...link} />
+            )
+          )}
       </AccordionContent>
     </AccordionItem>
   )

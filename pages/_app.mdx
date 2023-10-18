@@ -45,14 +45,36 @@ export default function App({ Component, pageProps }) {
               {
                 href:"/bla",
                 icon:Icons.Home,
-                label:"Home",
+                label:"Hom1",
                 notifications:1
               },
               {
-                href:"/bla",
+                href:"/bla2",
                 icon:Icons.Docs,
-                label:"Docs",
-                notifications:99
+                label:"Docs2",
+                notifications:99,
+                links:[
+                  {
+                    href:"/bla3",
+                    icon:Icons.Home,
+                    label:"Home3",
+                    notifications:6
+
+                  },
+                  {
+                    href:"/bla4",
+                    icon:Icons.Docs,
+                    label:"Docs4",
+                    links: [
+                      {
+                        href: "/bla5",
+                        icon: Icons.Home,
+                        label: "Home5",
+                        notifications: 3
+                      }
+                    ]
+                  }
+                ]
               }
             ]}/>
           </NavContent>
