@@ -184,10 +184,17 @@ interface NavCategoryItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const NavCategory = React.forwardRef<HTMLDivElement, NavCategoryItemProps>(
   ({ className, label, icon, links, ...props }, ref) => {
+    const { collapsed } = useNavContext()
+
     return (
       <div ref={ref} className={cn("", className)} {...props}>
         {label && (
-          <p className="ml-3 text-base font-semibold text-foreground/80">
+          <p
+            className={cn(
+              "ml-3 truncate text-base font-semibold text-foreground/80 transition-opacity duration-plico ease-in-out",
+              collapsed ? "opacity-0" : "opacity-100"
+            )}
+          >
             {label}
           </p>
         )}
