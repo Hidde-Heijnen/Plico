@@ -191,7 +191,7 @@ const NavCategory = React.forwardRef<HTMLDivElement, NavCategoryItemProps>(
         {label && (
           <p
             className={cn(
-              "ml-3 truncate text-base font-semibold text-foreground/80 transition-opacity duration-plico ease-in-out",
+              "ml-3 truncate text-sm font-medium text-foreground/80 transition-opacity duration-plico ease-in-out",
               collapsed ? "opacity-0" : "opacity-100"
             )}
           >
@@ -222,7 +222,7 @@ interface NavCollapsableItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
-  label: title,
+  label,
   icon: Icon,
   children,
   className,
@@ -230,26 +230,34 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
   ...props
 }) => {
   const { collapsed } = useNavContext()
-
   return (
     <AccordionItem
-      value={title}
+      value={label}
       className={cn("relative cursor-pointer", className)}
       {...props}
     >
       <AccordionHeader>
         <AccordionTrigger asChild>
-          <div className=" flex h-12 w-full items-center rounded-md p-3 text-foreground hover:bg-accent/30 [&[data-state=open]>.chevron]:rotate-180">
-            <Icon className="relative z-10 h-6 w-6 shrink-0" />
-            <span
+          <div className="flex h-12 w-full items-center justify-between rounded-md p-3 text-foreground hover:bg-accent/30 [&[data-state=open]>.chevron]:rotate-180">
+            <div className="relative flex grow items-center">
+              <Icon className="z-10 h-6 w-6 shrink-0" />
+              <span
+                className={cn(
+                  "relative z-10 ml-4 max-w-full truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-plico ease-in-out",
+                  collapsed &&
+                    "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
+                )}
+              >
+                {label}
+              </span>
+            </div>
+            <motion.div
               className={cn(
-                "relative z-10 ml-4 w-32 grow truncate text-lg opacity-100 transition-[margin,max-width,opacity] duration-plico ease-in-out",
-                collapsed &&
-                  "ml-0 max-w-0 opacity-0 group-[.category]:ml-4 group-[.category]:max-w-full group-[.category]:opacity-100"
+                "absolute right-6 mr-2 h-2 w-2 rounded-full bg-primary transition-[right,top] duration-plico",
+                collapsed && "right-1 top-3"
               )}
-            >
-              {title}
-            </span>
+            />
+
             <ChevronDown
               className={cn(
                 "chevron h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
@@ -342,9 +350,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                 {notifications && collapsed && (
                   <motion.div
                     layoutId={`${label} notification`}
-                    className={cn(
-                      "notification absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
-                    )}
+                    className="absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
                     style={{ borderRadius: 9999 }}
                     transition={{
                       duration: transitionDuration,
@@ -367,7 +373,7 @@ const NavLink: React.FC<NavLinkProps> = ({
             {notifications && !collapsed && (
               <motion.div
                 layoutId={`${label} notification`}
-                className="notification absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2 py-0.5 font-mono text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 transition={{
                   duration: transitionDuration,
                   ease: [0.4, 0, 0.2, 1],
