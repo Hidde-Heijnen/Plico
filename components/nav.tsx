@@ -225,11 +225,16 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
   label,
   icon: Icon,
   children,
+  notifications,
   className,
   links,
   ...props
 }) => {
   const { collapsed } = useNavContext()
+
+  const hasNotifications: boolean =
+    links?.some((link) => link.notifications > 0) || notifications > 0
+
   return (
     <AccordionItem
       value={label}
@@ -251,13 +256,14 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
                 {label}
               </span>
             </div>
-            <motion.div
-              className={cn(
-                "absolute right-6 mr-2 h-2 w-2 rounded-full bg-primary transition-[right,top,margin] duration-plico",
-                collapsed && "right-1 mb-4"
-              )}
-            />
-
+            {hasNotifications && (
+              <motion.div
+                className={cn(
+                  "absolute right-6 mr-2 h-2 w-2 rounded-full bg-primary transition-[right,top,margin] duration-plico",
+                  collapsed && "right-1 mb-4"
+                )}
+              />
+            )}
             <ChevronDown
               className={cn(
                 "chevron h-4 w-4 shrink-0 transition-[transform,opacity] duration-300",
@@ -347,7 +353,7 @@ const NavLink: React.FC<NavLinkProps> = ({
             )}
             <div className="flex items-center">
               <div className="relative">
-                {notifications && collapsed && (
+                {notifications > 0 && collapsed && (
                   <motion.div
                     layoutId={`${label} notification`}
                     className="absolute right-0 top-0 z-20 h-2 w-2 rounded-full bg-primary"
@@ -370,7 +376,7 @@ const NavLink: React.FC<NavLinkProps> = ({
                 {label}
               </span>
             </div>
-            {notifications && !collapsed && (
+            {notifications > 0 && !collapsed && (
               <motion.div
                 layoutId={`${label} notification`}
                 className="absolute right-0 z-10 mr-2 inline-flex items-center rounded-full border border-transparent bg-primary px-2 py-0.5 font-mono text-xs font-semibold text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"

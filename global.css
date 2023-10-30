@@ -82,6 +82,10 @@
   background-color: hsl(var(--background)) !important;
 }
 
+.max-xl\:nx-hidden.nx-h-0.nx-w-64.nx-shrink-0 {
+  display: none !important;
+}
+
 /* This is needed to override the default background color of the nextra-nav-container-blur class which is !important */
 body:not(#nonexistent) .nextra-nav-container-blur {
   background-color: hsl(var(--background) / 0.8) !important;
