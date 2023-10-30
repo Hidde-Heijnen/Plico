@@ -95,6 +95,10 @@ body:not(#nonexistent) .nextra-nav-container-blur {
   box-shadow: 0 -12px 16px hsl(var(--background)) !important;
 }
 
+a.nx-flex.nx-items-center.hover\:nx-opacity-75.ltr\:nx-mr-auto.rtl\:nx-ml-auto {
+  display: none !important;
+}
+
 .nextra-toc div {
   margin-right: -0.5rem !important;
 }
