@@ -11,6 +11,12 @@
       "sidebar": false
     }
   },
+  "settings": {
+    "title": "Settings",
+    "theme": {
+      "sidebar": false
+    }
+  },
   "contact": {
     "title": "Contact ↗",
     "type": "page",
