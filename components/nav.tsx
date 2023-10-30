@@ -253,8 +253,8 @@ const NavCollapsableItem: React.FC<NavCollapsableItemProps> = ({
             </div>
             <motion.div
               className={cn(
-                "absolute right-6 mr-2 h-2 w-2 rounded-full bg-primary transition-[right,top] duration-plico",
-                collapsed && "right-1 top-3"
+                "absolute right-6 mr-2 h-2 w-2 rounded-full bg-primary transition-[right,top,margin] duration-plico",
+                collapsed && "right-1 mb-4"
               )}
             />
 
